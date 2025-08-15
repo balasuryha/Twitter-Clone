@@ -111,3 +111,17 @@ export const deleteTweet = createAsyncThunk("tweet/deleteTweet", async (id) => {
     return error;
   }
 });
+
+// redux/actions/tweetActions.js
+export const votePoll = createAsyncThunk(
+  "tweet/votePoll",
+  async ({ tweetId, optionIndex }) => {
+    try {
+      const response = await tweetApi.votePoll(tweetId, optionIndex);
+      return response; // response.data.poll contains the updated poll
+    } catch (error) {
+      return error;
+    }
+  }
+);
+

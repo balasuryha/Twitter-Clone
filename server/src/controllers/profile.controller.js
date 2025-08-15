@@ -1,6 +1,6 @@
 import Profile from "../models/profile.js";
 import Tweet from "../models/tweet.js";
-import bcrypt from "bcrypt";
+import bcrypt from 'bcryptjs';
 import generateToken from "../utils/generateToken.js";
 
 // SIGN UP

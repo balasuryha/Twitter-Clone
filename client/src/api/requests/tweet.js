@@ -121,3 +121,11 @@ export const retweet = (tweetId) => {
       return err.response;
     });
 };
+
+// api/requests/tweet.js
+export const votePoll = (tweetId, optionIndex) => {
+  return axios
+    .post(url.VOTE_POLL + tweetId, { optionIndex })
+    .then((result) => result)
+    .catch((err) => err.response);
+};

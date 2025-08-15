@@ -48,3 +48,10 @@ export const GET_ALL_TWEETS = `${URL}/tweet?page=`;
 export const GET_PROFILE_TWEETS = `${URL}/tweet/profile?username=`;
 export const GET_TWEET_ID = `${URL}/tweet?id=`;
 export const GET_FOLLOWING_TWEETS = `${URL}/tweet/following?page=`;
+
+// api/urls.js
+export const VOTE_POLL = `${URL}/tweet/poll/vote?id=`;
+
+export const PUSH_PUBLIC_KEY = `${URL}/push/public-key`;
+export const PUSH_SUBSCRIBE  = `${URL}/push/subscribe`;
+export const PUSH_UNSUBSCRIBE= `${URL}/push/unsubscribe`;
