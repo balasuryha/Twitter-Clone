@@ -2,9 +2,11 @@
 
 This project is a full-stack Twitter-like app:
 
-# React + Redux Toolkit
+# Client:
+React + Redux Toolkit
 
-# Server: Node.js (Express), MongoDB (Mongoose), JWT in HttpOnly cookie
+# Server: 
+Node.js (Express), MongoDB (Mongoose), JWT in HttpOnly cookie
 
 # 1) Prerequisites
 
