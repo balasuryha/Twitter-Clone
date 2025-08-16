@@ -21,3 +21,14 @@ export const uploadImages = multer({
   fileFilter,
   limits: { fileSize: 5 * 1024 * 1024, files: 4 }, // 5MB each, max 4
 });
+// add under uploadImages
+function videoFilter(_req, file, cb) {
+  if (/^video\/(mp4|webm)$/i.test(file.mimetype)) return cb(null, true);
+  cb(new Error("Only MP4 or WebM video allowed"));
+}
+export const uploadVideo = multer({
+  storage,
+  fileFilter: videoFilter,
+  limits: { fileSize: 50 * 1024 * 1024, files: 1 } 
+});
+

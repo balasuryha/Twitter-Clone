@@ -1,6 +1,6 @@
 import express from "express";
 import auth from "../middlewares/auth.js";
-import { uploadImages } from "../middlewares/upload.js";
+import { uploadImages,uploadVideo } from "../middlewares/upload.js";
 
 const router = express.Router();
 
@@ -11,4 +11,9 @@ router.post("/image", auth, uploadImages.array("images", 4), (req, res) => {
   return res.status(201).json({ urls });
 });
 
+router.post("/video", auth, uploadVideo.single("video"), (req, res) => {
+  const base = `${req.protocol}://${req.get("host")}`;
+  const url = `${base}/uploads/${req.file.filename}`;
+  res.status(201).json({ url });
+});
 export default router;
