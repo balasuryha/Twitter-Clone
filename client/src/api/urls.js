@@ -48,3 +48,5 @@ export const GET_ALL_TWEETS = `${URL}/tweet?page=`;
 export const GET_PROFILE_TWEETS = `${URL}/tweet/profile?username=`;
 export const GET_TWEET_ID = `${URL}/tweet?id=`;
 export const GET_FOLLOWING_TWEETS = `${URL}/tweet/following?page=`;
+
+export const UPLOAD_IMAGES= `${BASE}/uploads-api/image`;

@@ -4,6 +4,7 @@ import profileRoutes from "./routes/profile.js";
 import tweetRoutes from "./routes/tweet.js";
 import dontenv from "dotenv";
 import cookieParser from "cookie-parser";
+import uploadRoutes from "./routes/uploads.js";
 dontenv.config();
 
 import "./database/index.js";
@@ -31,6 +32,14 @@ app.use("/profile", profileRoutes);
 
 // POST ROUTES
 app.use("/tweet", tweetRoutes);
+
+app.use("/uploads", express.static("uploads"));
+
+
+app.use("/uploads-api", uploadRoutes);
+
+
+
 
 app.listen(PORT_SERVER, () => {
   console.log(`Server is listening at ${PORT_SERVER}`);

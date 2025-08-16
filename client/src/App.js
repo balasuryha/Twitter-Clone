@@ -12,6 +12,7 @@ import Explore from "./views/Explore";
 import Notifications from "./views/Notifications";
 import Bookmark from "./views/Bookmark";
 import Messages from "./views/Messages";
+import Composer from "./views/Composer";
 const App = () => {
   return (
     <Router>
@@ -20,6 +21,7 @@ const App = () => {
         <Route exact path="/signup" component={Signup} />
 
         {/* Private Routes */}
+        <PrivateRoute exact path="/composer" component={Composer} />
         <PrivateRoute exact path="/settings" component={Settings} />
         <PrivateRoute exact path="/explore" component={Explore} />
         <PrivateRoute exact path="/tweet" component={NewTweet} />
