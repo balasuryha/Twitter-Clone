@@ -1,9 +1,15 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 export default function About() {
   return (
     <main className="about-page" style={page}>
       <header style={hero}>
+       
+        <Link to="/" aria-label="Close and go home" style={closeBtn} title="Close">
+          ×
+        </Link>
+
         <h1 style={h1}>Twitter-Clone — Project Overview</h1>
         <p style={lead}>
           This project is a learning clone of X/Twitter. It focuses on core
@@ -100,19 +106,18 @@ export default function About() {
         <p>Built for learning; not affiliated with Twitter/X.</p>
       </footer>
 
-      {/* scoped styles to make text readable on white cards */}
       <style>{`
-        .about-page h1, .about-page h2, .about-page h3, .about-page p, 
-        .about-page li, .about-page code { color: #0f172a; } /* slate-900 */
+        .about-page h1, .about-page h2, .about-page h3, .about-page p,
+        .about-page li, .about-page code { color: #0f172a; }
         .about-page code { background:#f3f4f6; padding:2px 6px; border-radius:6px; }
       `}</style>
     </main>
   );
 }
 
-/* layout + card styles */
+
 const page = { maxWidth: 980, margin: "0 auto", padding: "24px 16px" };
-const hero = { padding: 16, border: "1px solid #e5e7eb", borderRadius: 12, background: "#ffffff" };
+const hero = { position: "relative", padding: 16, border: "1px solid #e5e7eb", borderRadius: 12, background: "#ffffff" };
 const card = { marginTop: 16, padding: 16, border: "1px solid #e5e7eb", borderRadius: 12, background: "#ffffff" };
 const grid = { display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px,1fr))", gap: 16 };
 const h1 = { margin: 0, fontSize: 28, fontWeight: 800 };
@@ -121,3 +126,24 @@ const h3 = { margin: "0 0 6px 0", fontSize: 16, fontWeight: 700 };
 const lead = { margin: "8px 0 0 0", color: "#374151", lineHeight: 1.6 };
 const list = { margin: 0, paddingLeft: 18, lineHeight: 1.6 };
 const monoList = { ...list, fontFamily: "ui-monospace, SFMono-Regular, Menlo, monospace", fontSize: 13 };
+
+/* close button style */
+const closeBtn = {
+  position: "absolute",
+  top: 8,
+  right: 8,
+  width: 36,
+  height: 36,
+  borderRadius: 9999,
+  border: "1px solid #e5e7eb",
+  background: "#ffffff",
+  color: "#0f172a",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  textDecoration: "none",
+  fontSize: 22,
+  lineHeight: 1,
+  boxShadow: "0 1px 2px rgba(0,0,0,.05)",
+  cursor: "pointer"
+};
