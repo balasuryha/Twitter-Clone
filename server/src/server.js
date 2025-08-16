@@ -15,13 +15,13 @@ const PORT_CLIENT = process.env.PORT_CLIENT;
 
 app.use(
   cors({
-    origin: [`http://localhost:${PORT_CLIENT}`],
-    credentials: true,
+    origin: true,        
+    credentials: true,   
   })
 );
 app.use(cookieParser());
 app.use(express.json());
-app.use(express.static("uploads"));
++ app.use("/uploads", express.static("uploads"));
 
 app.get("/", (req, res) => {
   res.send("Twitter clone 🥳");

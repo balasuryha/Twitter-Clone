@@ -84,6 +84,8 @@ export const getProfileTweets = async (req, res) => {
  * POST /tweet/new  (auth)
  * Body: { body: string, media?: string[] }  // media = array of image URLs from /uploads-api/image
  */
+// POST /tweet/new  (auth)
+// body: { body: string, media?: (string | {type:'image'|'video', url:string})[] }
 export const newTweet = async (req, res) => {
   try {
     const user = req.user;
@@ -97,11 +99,19 @@ export const newTweet = async (req, res) => {
       return res.status(400).json({ message: "Tweet exceeds 280 characters" });
     }
 
-    // Only allow images here, cap at 4
-    const normalizedMedia = (media || [])
-      .slice(0, 4)
-      .filter((u) => typeof u === "string" && u.startsWith("http"))
-      .map((url) => ({ type: "image", url }));
+    // Normalize media: accept strings or objects, allow EITHER 1 video OR up to 4 images
+    const norm = (Array.isArray(media) ? media : [])
+      .map((m) =>
+        typeof m === "string"
+          ? { type: /\.(mp4|webm)(\?|#|$)/i.test(m) ? "video" : "image", url: m }
+          : m
+      )
+      .filter((m) => m && typeof m.url === "string" && m.url.startsWith("http"));
+
+    const hasVideo = norm.some((m) => m.type === "video");
+    const finalMedia = hasVideo
+      ? [norm.find((m) => m.type === "video")]            
+      : norm.filter((m) => m.type === "image").slice(0, 4); 
 
     const { hashtags, mentions } = await extractEntities(text);
 
@@ -109,7 +119,7 @@ export const newTweet = async (req, res) => {
       type: "tweet",
       body: text,
       author: user._id,
-      media: normalizedMedia,
+      media: finalMedia,
       hashtags,
       mentions,
     });
@@ -123,6 +133,7 @@ export const newTweet = async (req, res) => {
     return res.status(500).json({ message: "Failed to create tweet" });
   }
 };
+
 
 /**
  * DELETE /tweet/delete/:id  (auth)

@@ -1,6 +1,5 @@
 import React from "react";
 import SidebarLeft from "./SidebarLeft";
-import SidebarRight from "./SidebarRight";
 import Header from "./Header";
 import MiniTweetBtn from "../button/MiniTweetBtn";
 import { useDispatch, useSelector } from "react-redux";
@@ -32,7 +31,7 @@ function Layout({ children }) {
         {children}
       </main>
       <MiniTweetBtn />
-      <SidebarRight />
+     
       <TweetModal />
     </div>
   );

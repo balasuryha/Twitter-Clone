@@ -1,32 +1,52 @@
+// server/src/models/profile.js
 import mongoose from "mongoose";
 import Tweet from "./tweet.js";
 import getDate from "../utils/getDate.js";
 import autopopulate from "mongoose-autopopulate";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
+
 const { Schema } = mongoose;
 
 const profileSchema = new Schema(
   {
-    isOnline: Boolean,
-    fname: String,
-    lname: String,
-    email: String,
-    username: String,
-    password: String,
-    bio: String,
-    location: String,
-    website: String,
+    isOnline: { type: Boolean, default: false },
+
+    fname: { type: String, trim: true },
+    lname: { type: String, trim: true },
+
+    email: {
+      type: String,
+      required: true,
+      trim: true,
+      lowercase: true,
+      unique: true,
+      index: true,
+    },
+
+    username: {
+      type: String,
+      required: true,
+      trim: true,
+      unique: true,
+      index: true,
+    },
+
+    password: { type: String, required: true },
+
+    bio: { type: String, default: "" },
+    location: { type: String, default: "" },
+    website: { type: String, default: "" },
     avatar: String,
     banner: String,
+
     tweets: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Tweet",
-        autopopulate: {
-          maxDepth: 2,
-        },
+        autopopulate: { maxDepth: 2 },
       },
     ],
+
     following: [
       {
         type: mongoose.Schema.Types.ObjectId,
@@ -34,6 +54,7 @@ const profileSchema = new Schema(
         autopopulate: { select: "username _id", maxDepth: 1 },
       },
     ],
+
     followers: [
       {
         type: mongoose.Schema.Types.ObjectId,
@@ -41,24 +62,23 @@ const profileSchema = new Schema(
         autopopulate: { select: "username _id", maxDepth: 1 },
       },
     ],
-    notifications: Array,
+
+    notifications: { type: Array, default: [] },
+
     bookmarks: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Tweet",
-        autopopulate: {
-          maxDepth: 2,
-        },
+        autopopulate: { maxDepth: 2 },
       },
     ],
   },
-  { timestamps: true },
-  { collection: "profiles" }
+  { timestamps: true, collection: "profiles" }
 );
 
-// For schema methods.
+// ---------- Instance methods ----------
 class ProfileClass {
-  // AUTHENTICATION
+  // AUTH
   signIn() {
     this.isOnline = true;
     this.notifications.unshift({
@@ -69,15 +89,18 @@ class ProfileClass {
     });
     return this.save();
   }
+
   signOut() {
-    this.isOnline = true;
+    this.isOnline = false;
     return this.save();
   }
-  // PROFILE EDIT
+
+  // PROFILE
   changeAvatar(url) {
     this.avatar = url;
     return this.save();
   }
+
   updateProfile({ fname, lname, bio, location, website }) {
     this.fname = fname;
     this.lname = lname;
@@ -86,7 +109,8 @@ class ProfileClass {
     this.bio = bio;
     return this.save();
   }
-  // TWEET
+
+  // TWEETS
   tweet(tweet) {
     this.tweets.push(tweet);
     return this.save();
@@ -103,9 +127,7 @@ class ProfileClass {
   }
 
   deleteTweet(id) {
-    this.tweets = this.tweets.filter(
-      (tweets) => String(tweets._id) !== String(id)
-    );
+    this.tweets = this.tweets.filter((t) => String(t._id) !== String(id));
     return this.save();
   }
 
@@ -113,81 +135,86 @@ class ProfileClass {
     tweet.body = body;
     return tweet.save();
   }
-  // TWEET COMMENT
+
+  // REPLIES
   newReply(tweet, reply) {
     tweet.replies.unshift(reply);
     return tweet.save();
   }
 
-  deleteReply(tweet, comment) {
-    //!DOES NOT WORK FOR NOW
+  deleteReply(_tweet, _comment) {
+    // TODO
   }
-  //TWEET LIKE
+
+  // LIKES (works with ObjectIds or populated docs)
   like(tweet) {
-    const didThisUserLiked = tweet.likes.find(
-      (like) => like.username === this.username
-    );
-    if (didThisUserLiked) return;
-    tweet.likes.push(this);
+    const myId = String(this._id);
+    const already = tweet.likes.some((l) => String(l._id || l) === myId);
+    if (already) return;
+    tweet.likes.push(this._id);
     return tweet.save();
   }
+
   unlike(tweet) {
-    tweet.likes = tweet.likes.filter((like) => like.username !== this.username);
+    const myId = String(this._id);
+    tweet.likes = tweet.likes.filter((l) => String(l._id || l) !== myId);
     return tweet.save();
   }
+
   // BOOKMARKS
   addBookmark(tweet) {
     this.bookmarks.push(tweet);
     return this.save();
   }
+
   removeBookmark(tweet) {
     this.bookmarks = this.bookmarks.filter(
-      (bookmark) => String(bookmark._id) !== String(tweet._id)
+      (b) => String(b._id) !== String(tweet._id)
     );
     return this.save();
   }
-  // FOLLOW AND UNFOLLOW
+
+  // FOLLOW / UNFOLLOW
   async follow(profile) {
-    if (this.following.find((follow) => follow.username === profile.username)) {
-      return;
-    }
+    if (this.following.find((f) => f.username === profile.username)) return;
+
     profile.followers.push(this);
     profile.notifications.unshift({
       type: "follow",
       message: `${this.username} has started following you ${getDate()}`,
     });
     this.following.push(profile);
+
     await this.save();
     await profile.save();
   }
 
   async unfollow(profile) {
     profile.followers = profile.followers.filter(
-      (follow) => follow.username !== this.username
+      (f) => f.username !== this.username
     );
-
     this.following = this.following.filter(
-      (follow) => follow.username !== profile.username
+      (f) => f.username !== profile.username
     );
-
     await this.save();
     await profile.save();
   }
 }
 
-// Generates hash password on save.
-
+// ---------- Hooks ----------
 profileSchema.pre("save", async function (next) {
-  if (!this.isModified("password")) {
-    next();
+  if (!this.isModified("password")) return next();
+  try {
+    const salt = await bcrypt.genSalt(10);
+    this.password = await bcrypt.hash(this.password, salt);
+    return next();
+  } catch (err) {
+    return next(err);
   }
-  const salt = await bcrypt.genSalt(10);
-  this.password = await bcrypt.hash(this.password, salt);
 });
 
 profileSchema.plugin(autopopulate);
 profileSchema.loadClass(ProfileClass);
 
 const Profile = mongoose.model("Profile", profileSchema);
-
 export default Profile;
