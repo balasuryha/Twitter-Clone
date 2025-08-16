@@ -14,12 +14,11 @@ Using very new Node versions (e.g., v24) can break native modules like bcrypt.
 
 MongoDB: local instance running on mongodb://127.0.0.1:27017
 
-# 2) Install dependencies
+# 2) Install dependencies/Start App
    
 # Server
 npm install
 npm start
-
 
 macOS / Apple Silicon note (bcrypt):
 If you see native build errors for bcrypt, the quick fix is to use the JS version:
@@ -27,12 +26,10 @@ If you see native build errors for bcrypt, the quick fix is to use the JS versio
 npm uninstall bcrypt
 npm install bcryptjs
 
-
 Then change imports:
 
 - import bcrypt from "bcrypt";
 + import bcrypt from "bcryptjs";
-
 
 Make sure the uploads folder exists:
 
@@ -49,8 +46,12 @@ sudo chown -R $(whoami) node_modules
 chmod +x node_modules/.bin/*
 
 
-# 3) Verify the API
+# 3) Verify the Application
 
+# Backend
 curl http://localhost:5000/
-# -> "Twitter clone 🥳"
+-> "Twitter clone 🥳"
+
+# Frontend
+-> http://localhost:3000
 
