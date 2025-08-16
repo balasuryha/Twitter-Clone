@@ -6,4 +6,5 @@ const router = express.Router();
 router.get("/public-key", auth, getPublicKey);
 router.post("/subscribe", auth, subscribe);
 router.post("/unsubscribe", auth, unsubscribe);
+
 export default router;

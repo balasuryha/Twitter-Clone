@@ -111,3 +111,26 @@ export const removeBookmark = (id) => {
       return err.response;
     });
 };
+
+// ...
+export const searchProfiles = (q, page = 1) => {
+  return axios
+    .get(`${url.GET_PROFILE_SEARCH}${encodeURIComponent(q)}&page=${page}`)
+    .then((result) => result)
+    .catch((err) => err.response);
+};
+
+export const verifyPassword = (currentPassword) => {
+  return axios
+    .post(url.VERIFY_PASSWORD, { currentPassword })
+    .then((res) => res)
+    .catch((err) => err.response);
+};
+
+export const changePassword = (payload) => {
+  // payload: { currentPassword, newPassword, confirm }
+  return axios
+    .post(url.CHANGE_PASSWORD, payload)
+    .then((res) => res)
+    .catch((err) => err.response);
+};

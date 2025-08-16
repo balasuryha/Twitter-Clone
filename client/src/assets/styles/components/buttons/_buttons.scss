@@ -110,3 +110,30 @@
     }
   }
 }
+.as-input-btn {
+  width: 100%;
+  display: block;
+  padding: 1rem 1.2rem;
+  background-color: $white;
+  color: $dark-gray;
+  border: 1px solid $dark-blue;
+  border-radius: 12px;
+  font-size: $font-md;
+  text-align: left;
+  cursor: pointer;
+  margin-bottom: 1rem;
+  appearance: none; // removes default button styling
+  font-family: inherit; // matches input font
+  box-shadow: none; // removes button shadow if any
+
+  &:hover {
+    background-color: lighten($white, 2%);
+    border-color: darken($dark-blue, 5%);
+  }
+
+  &:focus {
+    outline: none;
+    border-color: $primary-color;
+    box-shadow: 0 0 0 2px rgba($primary-color, 0.2);
+  }
+}
