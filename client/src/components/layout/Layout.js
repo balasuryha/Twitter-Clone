@@ -32,7 +32,7 @@ function Layout({ children }) {
         {children}
       </main>
       <MiniTweetBtn />
-      <SidebarRight />
+      {/* <SidebarRight /> */}
       <TweetModal />
     </div>
   );

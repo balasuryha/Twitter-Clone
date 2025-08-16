@@ -7,7 +7,10 @@ import {
   BsBookmark,
   CgProfile,
 } from "react-icons/all";
-
+import {
+  BiHomeAlt, BiSearch, BiBell, BiEnvelope, BiBookmark,
+  BiUser, BiHash
+} from "react-icons/all";
 const sidebarLinks = [
   {
     text: "",
@@ -27,6 +30,7 @@ const sidebarLinks = [
     icon: FiHash,
     class: "explore",
   },
+  { text: "Search",   path: "/search",     class: "search",   icon: BiSearch },
   {
     text: "Notification",
     path: "/notifications",
@@ -58,6 +62,8 @@ const sidebarLinks = [
     icon: "",
     class: "tweet",
   },
+     
+
 ];
 
 export default sidebarLinks;

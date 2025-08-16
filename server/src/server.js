@@ -1,9 +1,11 @@
+import "dotenv/config"; // must be line 1
 import express from "express";
 import cors from "cors";
 import profileRoutes from "./routes/profile.js";
 import tweetRoutes from "./routes/tweet.js";
 import dontenv from "dotenv";
 import cookieParser from "cookie-parser";
+import pushRoutes from "./routes/push.routes.js";
 dontenv.config();
 
 import "./database/index.js";
@@ -35,3 +37,5 @@ app.use("/tweet", tweetRoutes);
 app.listen(PORT_SERVER, () => {
   console.log(`Server is listening at ${PORT_SERVER}`);
 });
+
+app.use("/push", pushRoutes);

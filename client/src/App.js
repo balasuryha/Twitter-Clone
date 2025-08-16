@@ -12,6 +12,8 @@ import Explore from "./views/Explore";
 import Notifications from "./views/Notifications";
 import Bookmark from "./views/Bookmark";
 import Messages from "./views/Messages";
+import Search from "./views/Search";
+
 const App = () => {
   return (
     <Router>
@@ -25,12 +27,14 @@ const App = () => {
         <PrivateRoute exact path="/tweet" component={NewTweet} />
         <PrivateRoute exact path="/tweet/:id" component={Tweet} />
         <PrivateRoute exact path="/home" component={Home} />
+        <PrivateRoute exact path="/search" component={Search} /> {/* ⬅️ new */}
         <PrivateRoute exact path="/profile/:username" component={Profile} />
         <PrivateRoute exact path="/edit" component={Edit} />
         <PrivateRoute exact path="/notifications" component={Notifications} />
         <PrivateRoute exact path="/messages" component={Messages} />
         <PrivateRoute exact path="/bookmarks" component={Bookmark} />
         <PrivateRoute exact path="/lists" component={Home} />
+
         <PrivateRoute exact path="/" component={Home} />
       </Switch>
     </Router>

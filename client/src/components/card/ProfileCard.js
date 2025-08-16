@@ -1,12 +1,18 @@
-import React from "react";
+// components/card/ProfileCard.jsx
+import React, { useState } from "react";
 import FollowBtn from "../button/FollowBtn";
 import { BsCalendar3, ImLink, MdLocationOn } from "react-icons/all";
 import EditBtn from "../button/EditBtn";
-
 import getDate from "../../utils/getDate";
 import Avatar from "../avatar/Avatar";
+import FollowListModal from "../modal/FollowListModal"; // ⬅️ NEW
+
 function ProfileCard({ profile, currentProfile }) {
-  const { username, avatar, followers, following, createdAt } = profile;
+  const { username, avatar, followers = [], following = [], createdAt } = profile;
+
+  const [showFollowers, setShowFollowers] = useState(false);
+  const [showFollowing, setShowFollowing] = useState(false);
+
   return (
     <div className="profile-card">
       <div className="profile-card__banner">
@@ -15,8 +21,9 @@ function ProfileCard({ profile, currentProfile }) {
           alt="banner"
         />
       </div>
+
       <div className="profile-card__bio">
-        <div className=" display-flex align-items-c justify-content-sb">
+        <div className="display-flex align-items-c justify-content-sb">
           <div className="profile-card__bio--img display-flex justify-content-c align-items-c">
             <Avatar size="large" username={username} avatar={avatar} />
           </div>
@@ -26,6 +33,7 @@ function ProfileCard({ profile, currentProfile }) {
             <FollowBtn username={username} followers={followers} />
           )}
         </div>
+
         <h3>{profile.fname}</h3>
         <small>@{profile.username}</small>
         <p>{profile.bio}</p>
@@ -42,18 +50,46 @@ function ProfileCard({ profile, currentProfile }) {
             <BsCalendar3 /> Joined {getDate(createdAt)}
           </li>
         </ul>
-        <div className="profile-card__bio--follow display-flex">
-          <p>
-            <span>{following.length}</span> Folowing
-          </p>
-          <p>
+
+        {/* clickable counts */}
+        <div className="profile-card__bio--follow display-flex" style={{ gap: 16 }}>
+          <button
+            type="button"
+            onClick={() => setShowFollowing(true)}
+            style={{ background: "transparent", border: 0, color: "inherit", cursor: "pointer" }}
+            title="View following"
+          >
+            <span>{following.length}</span> Following
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setShowFollowers(true)}
+            style={{ background: "transparent", border: 0, color: "inherit", cursor: "pointer" }}
+            title="View followers"
+          >
             <span>{followers.length}</span> Followers
-          </p>
+          </button>
         </div>
       </div>
+
       <div className="profile-card__tweets display-flex justify-content-c">
         Tweets
       </div>
+
+      {/* Modals */}
+      <FollowListModal
+        open={showFollowing}
+        onClose={() => setShowFollowing(false)}
+        title="Following"
+        users={following}
+      />
+      <FollowListModal
+        open={showFollowers}
+        onClose={() => setShowFollowers(false)}
+        title="Followers"
+        users={followers}
+      />
     </div>
   );
 }

@@ -13,6 +13,9 @@ import {
   getCurrentProfile,
   editProfile,
   getBookmarks,
+  searchProfiles,
+  verifyPassword,
+  changePassword,
 } from "../controllers/profile.controller.js";
 import auth from "../middlewares/auth.js";
 import {
@@ -38,5 +41,10 @@ router.patch("/unfollow", auth, unfollow);
 
 router.post("/bookmark/add", auth, addBookmark);
 router.patch("/bookmark/remove", auth, removeBookmark);
+
+router.get("/search", auth, searchProfiles); // <-- add this
+
+router.post("/verify-password", auth, verifyPassword);
+router.post("/change-password", auth, changePassword);
 
 export default router;
