@@ -3,25 +3,49 @@ import Tweet from "../models/tweet.js";
 import Profile from "../models/profile.js";
 
 /* ---------- GET tweets (by id or paged list) ---------- */
+// export const getTweet = async (req, res) => {
+//   try {
+//     const { id, page = 1 } = req.query;
+//     const limit = 10;
+//     const total = Number(page) * limit;
+
+//     if (id) {
+//       const tweet = await Tweet.findById(id);
+//       if (!tweet) return res.status(404).json({ message: "Tweet not found" });
+//       return res.send(tweet);
+//     }
+
+//     const tweets = await Tweet.find({ $or: [{ type: "tweet" }, { type: "retweet" }] })
+//       .sort("-createdAt")
+//       .limit(total);
+
+//     res.send(tweets);
+//   } catch (err) {
+//     res.status(500).json({ message: "Failed to fetch tweet(s)", error: err.message });
+//   }
+// };
 export const getTweet = async (req, res) => {
   try {
-    const { id, page = 1 } = req.query;
+    const { id, page } = req.query;
     const limit = 10;
-    const total = Number(page) * limit;
+    const total = (Number(page) || 1) * limit;
 
     if (id) {
+      // ✅ return a single tweet object
       const tweet = await Tweet.findById(id);
       if (!tweet) return res.status(404).json({ message: "Tweet not found" });
-      return res.send(tweet);
+      return res.json(tweet);
     }
 
-    const tweets = await Tweet.find({ $or: [{ type: "tweet" }, { type: "retweet" }] })
+    const tweets = await Tweet.find({
+      $or: [{ type: "tweet" }, { type: "retweet" }],
+    })
       .sort("-createdAt")
       .limit(total);
 
-    res.send(tweets);
-  } catch (err) {
-    res.status(500).json({ message: "Failed to fetch tweet(s)", error: err.message });
+    res.json(tweets);
+  } catch (e) {
+    res.status(500).json({ message: "Failed to fetch tweet(s)" });
   }
 };
 

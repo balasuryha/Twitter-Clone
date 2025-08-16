@@ -65,9 +65,35 @@ export default function EnablePushButton() {
   if (!supported) return null;
 
   return (
+    // <div style={{ marginBottom: 12, display: "flex", gap: 8 }}>
+    //   <button onClick={enable} disabled={busy}>Enable notifications</button>
+    //   <button onClick={disable} disabled={busy}>Disable</button>
+    // </div>
     <div style={{ marginBottom: 12, display: "flex", gap: 8 }}>
-      <button onClick={enable} disabled={busy}>Enable notifications</button>
-      <button onClick={disable} disabled={busy}>Disable</button>
-    </div>
+  <button
+    onClick={enable}
+    disabled={busy}
+    style={{
+      fontSize: "16px",        // Slightly smaller than before
+      padding: "10px 18px",    // Reduced padding
+      borderRadius: "6px",
+      cursor: "pointer",
+    }}
+  >
+    Enable notifications
+  </button>
+  <button
+    onClick={disable}
+    disabled={busy}
+    style={{
+      fontSize: "16px",
+      padding: "10px 18px",
+      borderRadius: "6px",
+      cursor: "pointer",
+    }}
+  >
+    Disable
+  </button>
+</div>
   );
 }

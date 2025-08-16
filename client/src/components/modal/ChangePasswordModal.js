@@ -120,42 +120,79 @@ export default function ChangePasswordModal({ open, onClose }) {
           {!verified ? (
             <>
               <input
-                type="password"
-                placeholder="Current password"
-                value={currentPassword}
-                onChange={(e) => setCurrentPassword(e.target.value)}
-              />
-              <button
-                type="button"
-                className="tweet-form__btn"
-                onClick={handleVerify}
-                disabled={loading || !currentPassword}
-              >
-                {loading ? "Verifying..." : "Verify current password"}
-              </button>
+    type="password"
+    placeholder="Current password"
+    value={currentPassword}
+    onChange={(e) => setCurrentPassword(e.target.value)}
+    style={{
+      fontSize: "18px",
+      padding: "12px 16px",
+      borderRadius: "8px",
+      border: "1px solid var(--border,#2f3336)",
+    }}
+  />
+  <button
+  type="button"
+  className="tweet-form__btn"
+  onClick={handleVerify}
+  disabled={loading || !currentPassword}
+  style={{
+    fontSize: "18px",
+    padding: "12px 16px",
+    borderRadius: "8px",
+    backgroundColor: "#1d9bf0", // Twitter blue
+    color: "#fff",
+    border: "none",
+    cursor: "pointer",
+    transition: "background-color 0.2s ease",
+  }}
+  onMouseOver={(e) => (e.target.style.backgroundColor = "#1a8cd8")}
+  onMouseOut={(e) => (e.target.style.backgroundColor = "#1d9bf0")}
+>
+  {loading ? "Verifying..." : "Verify current password"}
+</button>
+
             </>
           ) : (
             <>
               <input
-                type="password"
-                placeholder="New password"
-                value={newPassword}
-                onChange={(e) => setNewPassword(e.target.value)}
-              />
-              <input
-                type="password"
-                placeholder="Confirm new password"
-                value={confirm}
-                onChange={(e) => setConfirm(e.target.value)}
-              />
-              <button
-                type="button"
-                className="tweet-form__btn"
-                onClick={handleChangePassword}
-                disabled={loading}
-              >
-                {loading ? "Saving..." : "Update password"}
-              </button>
+    type="password"
+    placeholder="New password"
+    value={newPassword}
+    onChange={(e) => setNewPassword(e.target.value)}
+    style={{
+      fontSize: "18px",
+      padding: "12px 16px",
+      borderRadius: "8px",
+      border: "1px solid var(--border,#2f3336)",
+    }}
+  />
+  <input
+    type="password"
+    placeholder="Confirm new password"
+    value={confirm}
+    onChange={(e) => setConfirm(e.target.value)}
+    style={{
+      fontSize: "18px",
+      padding: "12px 16px",
+      borderRadius: "8px",
+      border: "1px solid var(--border,#2f3336)",
+    }}
+  />
+  <button
+    type="button"
+    className="tweet-form__btn"
+    onClick={handleChangePassword}
+    disabled={loading}
+    style={{
+      fontSize: "18px",
+      padding: "12px 16px",
+      borderRadius: "8px",
+    }}
+  >
+    {loading ? "Saving..." : "Update password"}
+  </button>
+
             </>
           )}
 
