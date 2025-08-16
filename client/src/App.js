@@ -13,12 +13,14 @@ import Notifications from "./views/Notifications";
 import Bookmark from "./views/Bookmark";
 import Messages from "./views/Messages";
 import Composer from "./views/Composer";
+import About from "./views/About";
 const App = () => {
   return (
     <Router>
       <Switch>
         <Route exact path="/signin" component={Signin} />
         <Route exact path="/signup" component={Signup} />
+        <Route exact path="/about" component={About} />
 
         {/* Private Routes */}
         <PrivateRoute exact path="/composer" component={Composer} />

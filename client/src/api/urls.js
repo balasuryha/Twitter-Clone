@@ -1,6 +1,4 @@
-// client/src/api/urls.js
 
-// Base API URL (env wins, else localhost)
 export const BASE = process.env.REACT_APP_API_URL || "http://localhost:5000";
 
 /* ---------------- PROFILE ENDPOINTS ---------------- */
@@ -11,7 +9,7 @@ export const SIGN_IN            = `${BASE}/profile/sign-in`;
 export const UPDATE_PROFILE     = `${BASE}/profile/edit`;
 export const UPLOAD_AVATAR      = `${BASE}/profile/upload-avatar`;
 
-export const FOLLOW_ID          = `${BASE}/profile/follow?id=`;       // if your server uses query for follow
+export const FOLLOW_ID          = `${BASE}/profile/follow?id=`;       
 export const FOLLOW_NAME        = `${BASE}/profile/follow?username=`;
 export const UNFOLLOW_ID        = `${BASE}/profile/unfollow?id=`;
 export const UNFOLLOW_NAME      = `${BASE}/profile/unfollow?username=`;
